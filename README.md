@@ -2,6 +2,13 @@
 
 An application to test (in isolation) the rendering capabilities of Advanced Effects.
 
+## Understand the project
+
+- `app/`: Where the application begins! (`main.cpp`). Come here to see how the application's overall workflow works
+- `src/`: Our source code (`libRenderingLab`)
+- `thirdparty/`: Where third-party modules reside (`skia` and `glad`)
+- `buildscripts/`: Useful CMake scripts (`CMAKE_MODULE_PATH`)
+
 ## How to run
 
 ### Linux dependencies
@@ -34,3 +41,4 @@ Run:
 ```
 ./RenderingLab
 ```
+
