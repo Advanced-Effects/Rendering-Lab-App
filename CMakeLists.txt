@@ -21,6 +21,7 @@ message("   with languages ${CMAKE_PROJECT_LANGUAGES}")
 # Sets the location of the .cmake scripts
 set(CMAKE_MODULE_PATH
         ${PROJECT_SOURCE_DIR}/buildscripts
+        ${PROJECT_SOURCE_DIR}/buildscripts/skia
         ${CMAKE_MODULE_PATH}
         )
 
@@ -37,6 +38,7 @@ include(ModuleSetup)
 # Add application code
 
 message("-- Setting application's global include directories")
+message("   (tell C++ where to find the files in the project)")
 include_directories(
         ${PROJECT_BINARY_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
@@ -46,12 +48,15 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/thirdparty/skia/skia
 )
 
+message("")
 message("-- Adding subdirectory: thirdparty")
 add_subdirectory(thirdparty)
 
+message("")
 message("-- Adding subdirectory: src")
 add_subdirectory(src)
 
+message("")
 message("-- Adding subdirectory: app")
 add_subdirectory(app)
 

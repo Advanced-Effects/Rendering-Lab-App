@@ -63,6 +63,7 @@ int GLWindow::run() {
 
         return 0;
 };
+
 void GLWindow::createGLWindow() {
         auto *window = glfwCreateWindow(
                 width(),
@@ -83,10 +84,12 @@ void GLWindow::createGLWindow() {
 
         m_glfwWindow = window;
 };
+
 // Resize the GL Viewport when resizing the window
 void onResize(GLFWwindow *window, int width, int height) {
         glViewport(0, 0, width, height);
 };
+
 void GLWindow::attachEvents(GLFWwindow *window) {
         // Attatch resize window event
         glfwSetFramebufferSizeCallback(m_glfwWindow, onResize);

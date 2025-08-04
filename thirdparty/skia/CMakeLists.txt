@@ -19,10 +19,14 @@
 
 cmake_minimum_required(VERSION 3.12)
 
+message("")
+message("-- Hello Skia!")
+
 include(ExternalProject)
 include(ProcessorCount)
 
 ProcessorCount(N)
+
 
 option(USE_SKIA_SYSTEM_LIBS "Use skia (third-party) system libraries on Linux" ON)
 option(LINUX_DEPLOY "Linux Deploy" OFF)
@@ -35,87 +39,20 @@ endif()
 
 set(SKIA_SRC "${CMAKE_CURRENT_SOURCE_DIR}/skia")
 set(SKIA_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/skia")
+message("-- SKIA_SRC: ${SKIA_SRC}")
+message("-- SKIA_BUILD_DIR: ${SKIA_BUILD_DIR}")
 
-if(APPLE)
-    set(USE_SKIA_SYSTEM_LIBS OFF)
-endif()
 
-if(${USE_SKIA_SYSTEM_LIBS} AND UNIX)
-    set(SKIA_ENABLE_EXTERNAL "true")
-else()
-    set(SKIA_ENABLE_EXTERNAL "false")
-endif()
+message("-- Setting up variables to pass to ExternalProject_Add")
+include(SetupSkiaVariables)
+message("   source code directory: ${SKIA_SRC}")
+message("   build directory: ${SKIA_BUILD_DIR}")
+message("   update command: ${SKIA_UPDATE_CMD}")
+message("   build command: ${SKIA_BUILD_CMD}")
+message(" skia argumentss: ${SKIA_ARGS}")
 
-if(WIN32)
-    set(GN_PATH ${SKIA_SRC}/bin/gn.exe)
-    set(SKIA_ARGS_EXTRA --ide=vs)
-    set(SKIA_BUILD_CMD msbuild all.sln)
-    if(${SYNC_SKIA_DEPS})
-        set(SKIA_UPDATE_CMD python.exe "tools\\git-sync-deps")
-    else()
-        set(SKIA_UPDATE_CMD :)
-    endif()
-    set(SKIA_ARGS "target_os=\"windows\" host_os=\"win\" current_os=\"win\" target_cpu=\"x64\" is_component_build=true")
-    set(SKIA_ARGS "${SKIA_ARGS} clang_win=\"C:\\Program Files\\LLVM\" cc=\"clang-cl\" cxx=\"clang-cl\"")
-    set(SKIA_ARGS "${SKIA_ARGS} extra_cflags=[\"-Wno-error\",\"/MD\",\"/O2\"]")
-else()
-    set(GN_PATH ${SKIA_SRC}/bin/gn)
-    set(SKIA_BUILD_CMD ninja -j${N})
-    if(${USE_SKIA_SYSTEM_LIBS})
-        set(SKIA_UPDATE_CMD true)
-    else()
-        if(${SYNC_SKIA_DEPS})
-            set(SKIA_UPDATE_CMD python3 "tools/git-sync-deps")
-        else()
-            set(SKIA_UPDATE_CMD true)
-        endif()
-    endif()
-    set(SKIA_ARGS "ar=\"${CMAKE_AR}\" cc=\"${CMAKE_C_COMPILER}\" cxx=\"${CMAKE_CXX_COMPILER}\"")
-    if(UNIX AND NOT APPLE)
-        if(${USE_EGL})
-            set(SKIA_ARGS "${SKIA_ARGS} skia_use_egl=true")
-        endif()
-        set(SKIA_ARGS "${SKIA_ARGS} is_component_build=true")
-        if (${LINUX_DEPLOY})
-            set(SKIA_ARGS "${SKIA_ARGS} extra_cflags=[\"-Wno-error\"]")
-        else()
-            set(SKIA_ARGS "${SKIA_ARGS} extra_cflags=[\"-Wno-error\", \"-Wno-psabi\"]")
-        endif()
-    endif()
-    if(APPLE)
-        set(GN_PATH ${SKIA_SRC}/bin/macOS/gn-${CMAKE_HOST_SYSTEM_PROCESSOR})
-        set(SKIA_UPDATE_CMD python3 "tools/git-sync-deps")
-        set(SKIA_ARGS "${SKIA_ARGS} target_cpu=\"${CMAKE_HOST_SYSTEM_PROCESSOR}\"")
-        if(${MAC_DEPLOY})
-            set(SKIA_ARGS "${SKIA_ARGS} extra_cflags=[\"-Wno-error\", \"-Wno-psabi\", \"-mmacosx-version-min=12.7\"]")
-            set(SKIA_ARGS "${SKIA_ARGS} extra_cflags_cc=[\"-frtti\", \"-mmacosx-version-min=12.7\"]")
-        else()
-            set(SKIA_ARGS "${SKIA_ARGS} extra_cflags=[\"-Wno-error\", \"-Wno-psabi\"]")
-            set(SKIA_ARGS "${SKIA_ARGS} extra_cflags_cc=[\"-frtti\"]")
-        endif()
-    endif()
-endif()
 
-set(SKIA_ARGS "${SKIA_ARGS} is_official_build=true is_debug=false")
-set(SKIA_ARGS "${SKIA_ARGS} skia_enable_pdf=false skia_enable_skottie=false skia_enable_tools=false skia_use_dng_sdk=false")
-set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_expat=${SKIA_ENABLE_EXTERNAL}")
-set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_libjpeg_turbo=${SKIA_ENABLE_EXTERNAL}")
-set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_libpng=${SKIA_ENABLE_EXTERNAL}")
-set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_libwebp=${SKIA_ENABLE_EXTERNAL}")
-set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_icu=${SKIA_ENABLE_EXTERNAL}")
-set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_harfbuzz=${SKIA_ENABLE_EXTERNAL}")
-if(WIN32 OR NOT ${USE_SKIA_SYSTEM_LIBS})
-    set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_zlib=${SKIA_ENABLE_EXTERNAL}")
-endif()
-if(UNIX AND NOT APPLE)
-    set(SKIA_ARGS "${SKIA_ARGS} skia_use_system_freetype2=${SKIA_ENABLE_EXTERNAL}")
-endif()
-if(APPLE)
-    set(SKIA_ARGS "${SKIA_ARGS} skia_use_libgifcodec=false")
-endif()
-
-message("-- skia args: ${SKIA_ARGS}")
-
+message("-- Building skia as ExternalProject Engine")
 ExternalProject_Add(
     Engine
     SOURCE_DIR ${SKIA_SRC}
@@ -131,15 +68,11 @@ ExternalProject_Add(
     USES_TERMINAL_BUILD true
 )
 
+
 if(UNIX AND NOT APPLE)
-    include(GNUInstallDirs)
-    install(
-        FILES
-        ${SKIA_BUILD_DIR}/libskia.friction.so
-        DESTINATION
-        ${CMAKE_INSTALL_LIBDIR}
-    )
+    #include(CopySkiaLibraryToInstallDir)
 endif()
+
 
 if(WIN32)
     add_custom_command(TARGET Engine POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SKIA_BUILD_DIR}/skia.dll.lib ${SKIA_BUILD_DIR}/skia.lib)
