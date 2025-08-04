@@ -1,5 +1,7 @@
 setup_module(lib${CMAKE_PROJECT_NAME})
 
+set(MODULE_INCLUDES ${PROJECT_SOURCE_DIR}/src)
+
 set(MODULE_FILES
     ${CMAKE_SOURCE_DIR}/src/GLUtil.h
     ${CMAKE_SOURCE_DIR}/src/GLUtil.cpp

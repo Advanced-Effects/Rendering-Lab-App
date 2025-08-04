@@ -1,22 +1,18 @@
 macro(setup_module name)
         set(MODULE_NAME ${name})
-        unset(MODULE_INCLUDES)
-        unset(MODULE_FILES)
+        unset(MODULE_INCLUDES) # module's include paths
+        unset(MODULE_FILES) # module's files
 endmacro()
 
 macro(finish_module)
-        # Add include path to include directories
-        set(APP_INCLUDE_PATHS
-                ${MODULE_INCLUDES}
-                ${APP_INCLUDE_PATHS})
+        message("-- Creating library ${MODULE_NAME}")
+        add_library(${MODULE_NAME} SHARED)
 
+        message("   with files: ${MODULE_FILES}")
+        target_sources(${MODULE_NAME} PRIVATE ${MODULE_FILES})
 
-        # Create CMake library
-        add_library(${MODULE_NAME} ${MODULE_FILES})
+        message("   with include directories ${MODULE_INCLUDES}")
+        include_directories(PRIVATE ${MODULE_INCLUDES})
 
-        # Add library to list to link it against executable
-        set(APP_LIBRARIES
-                ${MODULE_NAME}
-                ${APP_LIBRARIES})
 endmacro()
 

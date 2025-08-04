@@ -1,14 +1,28 @@
+message("-- Creating main executable with target name ${CMAKE_PROJECT_NAME}")
 add_executable(${CMAKE_PROJECT_NAME} main.cpp)
 
-# Finally join our libraries with the executable
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ${APP_LIBRARIES})
+if(WIN32)
+    set(SKIA_LIBRARIES
+        skia
+        user32
+        opengl32)
+    add_definitions(-DSKIA_DLL)
+else()
+    if(APPLE)
+        set(SKIA_LIBRARIES skia)
+    else()
+        set(SKIA_LIBRARIES skia.friction)
+    endif()
+endif()
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-        ${PROJECT_BINARY_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR}
-
-        ${PROJECT_SOURCE_DIR}/src
-
-        ${APP_INCLUDE_PATHS}
+set(EXECUTABLE_LIBRARIES
+        ${APP_DEPENDENCIES}
+        ${SKIA_LIBRARIES}
+        glad
+        lib${CMAKE_PROJECT_NAME}
 )
+message("   linked with ${EXECUTABLE_LIBRARIES}")
+
+# Finally join our libraries with the executable
+target_link_libraries(${CMAKE_PROJECT_NAME} ${EXECUTABLE_LIBRARIES})
 
