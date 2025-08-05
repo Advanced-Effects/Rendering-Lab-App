@@ -1,10 +1,6 @@
 message("-- Creating main executable with target name ${CMAKE_PROJECT_NAME}")
 add_executable(${CMAKE_PROJECT_NAME} main.cpp)
 
-message("   finding where Skia shared library is")
-include(FindSkiaSystem)
-message("   set SKIA_LIBRARIES to ${SKIA_LIBRARIES}")
-
 message("-- Use target_link_directories to")
 message("   tell target where to look for .dlls")
 message("   (by default in CMake +3 it is recommended to link by targets, not directories)")

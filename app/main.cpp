@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
         std::cout << "- Hello!" << std::endl;
 
         std::cout << "- Initializing GLFW library..." << std::endl;
-        GLUtil::initializeGLFW();
+        initializeGLFW();
 
         std::cout << "- Create blank OpenGL Window" << std::endl;
         std::cout << "  for GPU rendering" << std::endl;

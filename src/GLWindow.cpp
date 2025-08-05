@@ -80,7 +80,7 @@ void GLWindow::createGLWindow() {
 
         // Load GL functions AFTER setting the current context
         // Either we're getting a segmentation fault...
-        GLUtil::loadGLFunctions();
+        loadGLFunctions();
 
         m_glfwWindow = window;
 };

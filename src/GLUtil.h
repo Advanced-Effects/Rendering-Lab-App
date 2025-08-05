@@ -4,9 +4,6 @@
 
 #pragma once
 
-namespace GLUtil {
-
 void initializeGLFW();
 bool loadGLFunctions();
 
-};

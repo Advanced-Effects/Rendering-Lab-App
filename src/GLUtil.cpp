@@ -7,8 +7,6 @@
 // For using OpenGL
 #include <GLFW/glfw3.h>
 
-using namespace GLUtil;
-
 // GLFW is the library which we use to call OpenGL functions
 void initializeGLFW() {
         glfwInit();
