@@ -70,7 +70,7 @@ ExternalProject_Add(
 
 
 if(UNIX AND NOT APPLE)
-    #include(CopySkiaLibraryToInstallDir)
+    include(CopySkiaLibraryToInstallDir)
 endif()
 
 
