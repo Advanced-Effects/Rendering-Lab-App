@@ -7,7 +7,7 @@
 // For using OpenGL
 #include <GLFW/glfw3.h>
 
-using namespace std;
+
 
 // GLFW is the library which we use to call OpenGL functions
 void initializeGLFW() {
@@ -21,7 +21,7 @@ void initializeGLFW() {
         #endif
 
         if (!glfwInit()) {
-                cerr << "Failed to initialize GLFW" << endl;
+                std::cerr << "Failed to initialize GLFW" << std::endl;
                 return -1;
         }
 };
