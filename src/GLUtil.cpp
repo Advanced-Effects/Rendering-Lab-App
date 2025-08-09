@@ -7,12 +7,23 @@
 // For using OpenGL
 #include <GLFW/glfw3.h>
 
+using namespace std;
+
 // GLFW is the library which we use to call OpenGL functions
 void initializeGLFW() {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+        #ifdef __APPLE__
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        #endif
+
+        if (!glfwInit()) {
+                cerr << "Failed to initialize GLFW" << endl;
+                return -1;
+        }
 };
 
 // OpenGL functions need to be manually found.

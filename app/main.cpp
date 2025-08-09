@@ -7,22 +7,24 @@
 #include "GLWindow.h"
 #include "ExampleCanvas.h"
 
-int main(int argc, char *argv[]) {
-        std::cout << "- Hello!" << std::endl;
+using namespace std;
 
-        std::cout << "- Initializing GLFW library..." << std::endl;
+int main(int argc, char *argv[]) {
+        cout << "- Hello!" << endl;
+
+        cout << "- Initializing GLFW library..." << endl;
         initializeGLFW();
 
-        std::cout << "- Create blank OpenGL Window" << std::endl;
-        std::cout << "  for GPU rendering" << std::endl;
+        cout << "- Create blank OpenGL Window" << endl;
+        cout << "  for GPU rendering" << endl;
         GLWindow window;
 
-        std::cout << "- Create and bind Skia to the GLWindow" << std::endl;
-        std::cout << "  and draw stuff" << std::endl;
+        cout << "- Create and bind Skia to the GLWindow" << endl;
+        cout << "  and draw stuff" << endl;
         auto canvas = ExampleCanvas(&window);
 
-        std::cout << "- Running application loop" << std::endl;
-        std::cout << "  we don't want the app to immediately close after running" << std::endl;
+        cout << "- Running application loop" << endl;
+        cout << "  we don't want the app to immediately close after running" << endl;
         return window.run();
 }
 
