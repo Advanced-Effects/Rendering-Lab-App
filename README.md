@@ -31,9 +31,9 @@ Clone the repository, setup CMake and build:
 ```
 git clone https://github.com/Advanced-Effects/Rendering-Lab-App.git
 cd Rendering-Lab-App
-mkdir build && cd build
 git submodule init
 git submodule update
+mkdir build && cd build
 cmake ..
 cmake --build .
 ```
