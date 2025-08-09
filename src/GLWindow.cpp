@@ -5,6 +5,8 @@
 
 #include "GLUtil.h"
 
+#include <iostream>
+
 GLWindow::GLWindow() {};
 GLWindow::GLWindow(int width, int height) {
         setDimensions(width, height);
@@ -72,7 +74,11 @@ void GLWindow::createGLWindow() {
                 NULL,
                 NULL
         );
-        if (window == NULL) return;
+        if (window == NULL) {
+                std::cerr << "Failed to create GLFW window" << std::endl;
+                glfwTerminate();
+                return;
+        }
 
         // This makes it so that when you call OpenGL functions like glViewport, glClearColor...
         // it affects this window
