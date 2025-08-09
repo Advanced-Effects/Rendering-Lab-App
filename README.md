@@ -2,6 +2,14 @@
 
 An application to test (in isolation) the rendering capabilities of Advanced Effects.
 
+# Roadmap
+
+- [x] 🖥️ An OpenGL basic application.
+- [x] 🎨 Integrated with Skia2D.
+- [ ] 🟥 That can draw objects
+- [ ] 🕐 animate keyframes with interpolation
+- [ ] 💨 Apply Effects and Modes
+
 ## Understand the project
 
 - `app/`: Where the application begins! (`main.cpp`). Come here to see how the application's overall workflow works
