@@ -10,5 +10,7 @@ install(
     FILES
     ${SKIA_BUILD_DIR}/libskia.friction.so
     DESTINATION
-    ${CMAKE_INSTALL_LIBDIR}
+    src # This installs libskia.friction.so to build/src/libskia.friction.so,
+    # which then is found with target_link_directories(${CMAKE_BINARY_SRC}/src)
+    # and target_link_libraries(skia.friction)
 )
