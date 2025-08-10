@@ -30,7 +30,7 @@ apt-get install libglew-dev libglfw3-dev libglm-dev
 
 ### Windows dependencies
 
-- [How to setup GLFW in Windows using Visual Studio](https://learnopengl.com/Getting-started/Creating-a-window).
+**In construction**
 
 ### Build & run
 
@@ -53,4 +53,3 @@ Run:
 ```
 ./RenderingLab
 ```
-
