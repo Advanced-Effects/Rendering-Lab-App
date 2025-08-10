@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <functional>
 
 class GLFWwindow;
 
@@ -26,6 +28,11 @@ public:
         // We don't want to immediately close the program after creating the window
         int run();
 
+        // Set callbacks of when it's okay to draw things on screen
+        void setOnDrawRequest(std::function<void()> callback) {
+            m_onDrawRequest.push_back(callback);
+        };
+
 private:
         std::string m_title = "Rendering Lab";
         int m_width = 1280;
@@ -44,7 +51,7 @@ private:
         // Receive input from OpenGL
         void processInput(GLFWwindow *window);
         // Called when it is okay to draw things on screen
-        void performRendering(GLFWwindow *window);
+        std::vector<std::function<void()>> m_onDrawRequest;
 
         /* ********** Utility ********** */
 

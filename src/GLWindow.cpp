@@ -1,5 +1,6 @@
 #include "GLWindow.h"
 
+#include <algorithm>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -55,7 +56,12 @@ int GLWindow::run() {
         while(!glfwWindowShouldClose(m_glfwWindow))
         {
                 processInput(m_glfwWindow);
-                performRendering(m_glfwWindow);
+
+                // It is okay to draw
+                // Call each callback that has connected to "onDrawRequest" signal
+                for(auto& callback : m_onDrawRequest) {
+                    callback();
+                };
 
                 // Run application loop (avoid closing app)
                 glfwSwapBuffers(m_glfwWindow);
@@ -102,7 +108,3 @@ void GLWindow::attachEvents(GLFWwindow *window) {
 };
 
 void GLWindow::processInput(GLFWwindow *window) {};
-
-void GLWindow::performRendering(GLFWwindow *window) {};
-
-

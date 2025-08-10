@@ -45,12 +45,21 @@ SkCanvas* obtainSkCanvas(GLWindow *glWindow) {
         // SkSurfaceProps -> SkCanvas
         // The skia surface creates a SkCanvas, which we use to draw
         return skiaSurface->getCanvas();
+};
 
+void ISkiaGLWindow::requestPaint() {
+    if (!m_skiaContext) return;
+
+    paintThisFrame(m_skiaContext);
 };
 
 ISkiaGLWindow::ISkiaGLWindow(GLWindow *glWindow)
         : m_glWindow(glWindow) {
                 //setDimensions(width, height);
                 m_skiaContext = obtainSkCanvas(m_glWindow);
-        };
 
+                // When GL says it's okay to draw, request a redraw
+                m_glWindow->setOnDrawRequest([this]() {
+                    requestPaint();
+                });
+        };
