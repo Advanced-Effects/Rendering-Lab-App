@@ -11,7 +11,10 @@ int main(int argc, char *argv[]) {
         std::cout << "- Hello!" << std::endl;
 
         std::cout << "- Initializing GLFW library..." << std::endl;
-        initializeGLFW();
+        if(!initializeGLFW()) {
+            std::cerr << "Failed to initialize GLFW" << std::endl;
+            return -1;
+        };
 
         std::cout << "- Create blank OpenGL Window" << std::endl;
         std::cout << "  for GPU rendering" << std::endl;
@@ -25,4 +28,3 @@ int main(int argc, char *argv[]) {
         std::cout << "  we don't want the app to immediately close after running" << std::endl;
         return window.run();
 }
-

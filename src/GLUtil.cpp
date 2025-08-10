@@ -10,7 +10,7 @@
 
 
 // GLFW is the library which we use to call OpenGL functions
-void initializeGLFW() {
+bool initializeGLFW() {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -20,10 +20,9 @@ void initializeGLFW() {
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         #endif
 
-        if (!glfwInit()) {
-                std::cerr << "Failed to initialize GLFW" << std::endl;
-                return -1;
-        }
+        if (!glfwInit()) return false;
+
+        return true;
 };
 
 // OpenGL functions need to be manually found.
@@ -35,4 +34,3 @@ bool loadGLFunctions() {
                 return false;
         return true;
 }
-

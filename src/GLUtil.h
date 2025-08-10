@@ -4,6 +4,5 @@
 
 #pragma once
 
-void initializeGLFW();
+bool initializeGLFW();
 bool loadGLFunctions();
-
