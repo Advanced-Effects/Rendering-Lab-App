@@ -72,7 +72,7 @@ int GLWindow::run() {
         return 0;
 };
 
-void GLWindow::createGLWindow() {
+void GLWindow::init() {
         auto *window = glfwCreateWindow(
                 width(),
                 height(),
