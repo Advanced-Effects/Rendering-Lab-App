@@ -23,6 +23,8 @@ public:
         int x() const;
         int y() const;
 
+        // Initializes the glContext (glfwWindow)
+        void init();
         GLFWwindow *glContext();
 
         // We don't want to immediately close the program after creating the window
@@ -42,8 +44,7 @@ private:
 
         /* ********* GLFW ************ */
 
-        // Create the underlying OpenGL window with the paramters
-        void createGLWindow();
+        // The glContext
         GLFWwindow *m_glfwWindow = nullptr;
 
         /* ********** Rendering loop ** */
