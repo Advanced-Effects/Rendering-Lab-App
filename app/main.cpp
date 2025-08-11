@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
         std::cout << "- Create blank OpenGL Window" << std::endl;
         std::cout << "  for GPU rendering" << std::endl;
         GLWindow window;
+        window.init();
 
         std::cout << "- Create and bind Skia to the GLWindow" << std::endl;
         std::cout << "  and draw stuff" << std::endl;
