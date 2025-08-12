@@ -48,9 +48,8 @@ GLFWwindow* GLWindow::glContext() {
 };
 
 int GLWindow::run() {
-        createGLWindow();
         if (m_glfwWindow == nullptr) {
-                return -1;
+                return EXIT_FAILURE;
         };
 
         while(!glfwWindowShouldClose(m_glfwWindow))
