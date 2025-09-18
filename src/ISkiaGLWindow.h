@@ -2,6 +2,7 @@
 
 #include "GLWindow.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkSurface.h"
 
 // This object connects the Skia library to the OpenGL window,
 // and provides a method to draw.
@@ -18,11 +19,13 @@ private:
         GLWindow *m_glWindow;
 
         // Skia Canvas is the object we use to draw shapes
-        SkCanvas *m_skiaContext = nullptr;
+        SkCanvas* m_skiaContext = nullptr;
+        SkCanvas* obtainSkCanvas();
+        // we store skia surface here to keep it in memory
+        sk_sp<SkSurface> m_skiaSurface;
 
         // Call this function when something happens on the canvas and needs to be redrawn.
         // (An object changes, a new keyframe is selected, zoom in/out...)
         // We do this to save battery and not render frames every frame unnecessarily
         void requestPaint();
 };
-
