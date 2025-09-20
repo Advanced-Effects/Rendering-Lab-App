@@ -52,6 +52,11 @@ message("")
 message("-- Adding subdirectory: thirdparty")
 add_subdirectory(thirdparty)
 
+message("-- Use link_directories to")
+message("   tell targets where to look for .dlls")
+message("   (by default in CMake +3 it is recommended to link by targets, not directories)")
+link_directories(${CMAKE_BINARY_DIR}/src)
+
 message("")
 message("-- Adding subdirectory: src")
 add_subdirectory(src)
@@ -59,4 +64,3 @@ add_subdirectory(src)
 message("")
 message("-- Adding subdirectory: app")
 add_subdirectory(app)
-
