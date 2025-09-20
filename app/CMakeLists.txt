@@ -1,6 +1,8 @@
 message("-- Creating main executable with target name ${CMAKE_PROJECT_NAME}")
 add_executable(${CMAKE_PROJECT_NAME} main.cpp)
 
+include(skia/FindSkiaSystem)
+
 set(EXECUTABLE_LIBRARIES
         ${APP_DEPENDENCIES}
         ${SKIA_LIBRARIES}
