@@ -3,7 +3,7 @@
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/GrContext.h"
 #include "include/core/SkImageInfo.h"
-#include "include/core/SkSurface.h"
+#include "include/core/SkGraphics.h"
 
 // The Skia Surface is the object we use to talk to the GPU
 // In order to render to an OpenGL context, we need to obtain the
@@ -36,19 +36,24 @@ sk_sp<SkSurface> obtainSkiaSurfaceFromCurrentGLContext(GLWindow *glWindow) {
 
 // The mission of this function is to connect the Skia Canvas with the OpenGL context (window)
 // SkCanvas is the object we (users of the library) use to draw things on screen
-SkCanvas* obtainSkCanvas(GLWindow *glWindow) {
-        auto skiaSurface = obtainSkiaSurfaceFromCurrentGLContext(glWindow);
-        if (!skiaSurface) {
+SkCanvas* ISkiaGLWindow::obtainSkCanvas() {
+        // NOTE: We put SkiaSurface in a class field to keep it in memory
+        // So we can keep drawing (either it crashes)
+        m_skiaSurface = obtainSkiaSurfaceFromCurrentGLContext(m_glWindow);
+        if (!m_skiaSurface) {
                 return nullptr;
         }
 
+        // Initialize Skia so we can draw
+        SkGraphics::Init();
+
         // SkSurfaceProps -> SkCanvas
         // The skia surface creates a SkCanvas, which we use to draw
-        return skiaSurface->getCanvas();
+        return m_skiaSurface->getCanvas();
 };
 
 void ISkiaGLWindow::requestPaint() {
-    if (!m_skiaContext) return;
+    if (!m_skiaContext || !m_skiaSurface) return;
 
     paintThisFrame(m_skiaContext);
 };
@@ -56,7 +61,7 @@ void ISkiaGLWindow::requestPaint() {
 ISkiaGLWindow::ISkiaGLWindow(GLWindow *glWindow)
         : m_glWindow(glWindow) {
                 //setDimensions(width, height);
-                m_skiaContext = obtainSkCanvas(m_glWindow);
+                m_skiaContext = obtainSkCanvas();
 
                 // When GL says it's okay to draw, request a redraw
                 m_glWindow->setOnDrawRequest([this]() {
