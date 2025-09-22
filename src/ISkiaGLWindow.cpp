@@ -1,7 +1,6 @@
 #include "ISkiaGLWindow.h"
 
 #include "include/gpu/gl/GrGLInterface.h"
-#include "include/gpu/GrContext.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkGraphics.h"
 
@@ -9,17 +8,17 @@
 // In order to render to an OpenGL context, we need to obtain the
 // SkSurface from the GL context directly.
 // Ref: https://skia.org/docs/user/api/skcanvas_creation/
-sk_sp<SkSurface> obtainSkiaSurfaceFromCurrentGLContext(GLWindow *glWindow) {
-        auto glContext = glWindow->glContext();
+sk_sp<SkSurface> ISkiaGLWindow::obtainSkiaSurfaceFromCurrentGLContext() {
+        auto glContext = m_glWindow->glContext();
 
         // You've already created your OpenGL context and bound it.
         sk_sp<const GrGLInterface> interface = nullptr;
 
         const GrContextOptions &grOptions = GrContextOptions();
-        auto grContext = GrContext::MakeGL(interface, grOptions);
+        m_graphicsContext = GrContext::MakeGL(interface, grOptions);
 
-        int width = glWindow->width();
-        int height = glWindow->height();
+        int width = m_glWindow->width();
+        int height = m_glWindow->height();
         SkImageInfo imageInformation = SkImageInfo::MakeN32Premul(width, height);
 
 
@@ -27,7 +26,7 @@ sk_sp<SkSurface> obtainSkiaSurfaceFromCurrentGLContext(GLWindow *glWindow) {
 
         // Create the Skia Surface from the GL context
         return SkSurface::MakeRenderTarget(
-                grContext.get(),
+                m_graphicsContext.get(),
                 SkBudgeted::kNo,
                 imageInformation,
                 kTopLeft_GrSurfaceOrigin,
@@ -39,7 +38,7 @@ sk_sp<SkSurface> obtainSkiaSurfaceFromCurrentGLContext(GLWindow *glWindow) {
 SkCanvas* ISkiaGLWindow::obtainSkCanvas() {
         // NOTE: We put SkiaSurface in a class field to keep it in memory
         // So we can keep drawing (either it crashes)
-        m_skiaSurface = obtainSkiaSurfaceFromCurrentGLContext(m_glWindow);
+        m_skiaSurface = obtainSkiaSurfaceFromCurrentGLContext();
         if (!m_skiaSurface) {
                 return nullptr;
         }
@@ -56,6 +55,8 @@ void ISkiaGLWindow::requestPaint() {
     if (!m_skiaContext || !m_skiaSurface) return;
 
     paintThisFrame(m_skiaContext);
+    // Tell Skia to render stuff to GPU
+    m_graphicsContext->flush();
 };
 
 ISkiaGLWindow::ISkiaGLWindow(GLWindow *glWindow)
