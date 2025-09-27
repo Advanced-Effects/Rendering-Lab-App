@@ -1,0 +1,40 @@
+# This piece of code was made by ChatGPT because I don't care enough to learn this
+
+name: Build project
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive  # Gets submodules
+
+    - name: ⚙️ Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build g++
+        sudo apt-get install -y mesa-utils libglu1-mesa-dev freeglut3-dev mesa-common-dev
+        sudo apt-get install -y libglew-dev libglfw3-dev libglm-dev
+
+    - name: 🏗️ Configure and build
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+        cmake --build . -j$(nproc)
+
+    - name: 📦 Upload executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: RenderingLab
+        path: |
+          build/*
+        if-no-files-found: error
