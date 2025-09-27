@@ -44,7 +44,6 @@ jobs:
         mkdir -p build
         cd build
         cmake ..
-        cmake --install . --prefix=.
         cmake --build . -j$(nproc)
 
     - name: 📦 Upload executable
