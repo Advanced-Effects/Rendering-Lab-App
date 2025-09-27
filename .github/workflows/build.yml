@@ -20,9 +20,11 @@ jobs:
     - name: ⚙️ Set up dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake ninja-build g++
+        sudo apt-get install -y cmake ninja-build clang g++
         sudo apt-get install -y mesa-utils libglu1-mesa-dev freeglut3-dev mesa-common-dev
         sudo apt-get install -y libglew-dev libglfw3-dev libglm-dev
+        sudo apt-get install -y libfontconfig1-dev libfreetype-dev libjpeg-turbo8-dev libpng-dev libwebp-dev
+        sudo apt-get install -y libharfbuzz-dev libicu-dev
 
     - name: 🏗️ Configure and build
       run: |
