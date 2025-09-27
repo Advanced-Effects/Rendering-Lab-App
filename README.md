@@ -6,7 +6,7 @@ An application to test (in isolation) the rendering capabilities of Advanced Eff
 
 - [x] 🖥️ An OpenGL basic application.
 - [x] 🎨 Integrated with Skia2D.
-- [ ] 🟥 That can draw objects
+- [x] 🟥 That can draw objects
 - [ ] 🕐 animate keyframes with interpolation
 - [ ] 💨 Apply Effects and Modes
 
