@@ -27,7 +27,7 @@ jobs:
         sudo apt-get install -y libharfbuzz-dev libicu-dev
 
     - name: Cache build directory
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: build/
         key: ${{ runner.os }}-build-${{ hashFiles('**/CMakeLists.txt', '**/*.cpp') }}
