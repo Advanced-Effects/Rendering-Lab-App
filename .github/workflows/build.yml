@@ -26,6 +26,14 @@ jobs:
         sudo apt-get install -y libfontconfig1-dev libfreetype-dev libjpeg-turbo8-dev libpng-dev libwebp-dev
         sudo apt-get install -y libharfbuzz-dev libicu-dev
 
+    - name: Cache build directory
+      uses: actions/cache@v2
+      with:
+        path: build/
+        key: ${{ runner.os }}-build-${{ hashFiles('**/CMakeLists.txt', '**/*.cpp') }}
+        restore-keys: |
+          ${{ runner.os }}-build-
+
     - name: 🏗️ Configure and build
       run: |
         mkdir -p build
