@@ -1,6 +1,9 @@
 message("-- Creating main executable with target name ${CMAKE_PROJECT_NAME}")
 add_executable(${CMAKE_PROJECT_NAME} main.cpp)
 
+# Tell CMake to find .dlls in 'build/src' so it can find libskia.friction.so
+target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/src)
+
 include(skia/FindSkiaSystem)
 
 set(EXECUTABLE_LIBRARIES
