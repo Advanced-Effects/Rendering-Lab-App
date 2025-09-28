@@ -17,6 +17,9 @@ message("   finding where Skia shared library is")
 include(FindSkiaSystem)
 message("   set SKIA_LIBRARIES to ${SKIA_LIBRARIES}")
 
+# tell target where to find .dlls
+target_link_directories(lib${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/src)
+
 set(LIBRARY_DEPENDENCIES
         ${APP_DEPENDENCIES}
         ${SKIA_LIBRARIES}
