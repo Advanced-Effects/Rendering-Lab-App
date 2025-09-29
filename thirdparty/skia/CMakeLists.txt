@@ -54,7 +54,7 @@ message(" skia argumentss: ${SKIA_ARGS}")
 
 message("-- Building skia as ExternalProject Engine")
 ExternalProject_Add(
-    Engine
+    skialib
     SOURCE_DIR ${SKIA_SRC}
     BINARY_DIR ${SKIA_BUILD_DIR}
     DOWNLOAD_COMMAND :
@@ -68,6 +68,7 @@ ExternalProject_Add(
     USES_TERMINAL_BUILD true
 )
 
+add_dependencies(skialib)
 
 if(UNIX AND NOT APPLE)
     include(CopySkiaLibraryToInstallDir)
