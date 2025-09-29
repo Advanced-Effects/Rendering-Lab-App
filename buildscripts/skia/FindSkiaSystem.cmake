@@ -3,14 +3,14 @@
 
 if(WIN32)
     set(SKIA_LIBRARIES
-        skia
+        skialib
         user32
         opengl32)
     add_definitions(-DSKIA_DLL)
 else()
     if(APPLE)
-        set(SKIA_LIBRARIES skia)
+        set(SKIA_LIBRARIES skialib)
     else()
-        set(SKIA_LIBRARIES skia.friction)
+        set(SKIA_LIBRARIES skialib)
     endif()
 endif()
