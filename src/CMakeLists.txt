@@ -28,6 +28,3 @@ set(MODULE_LINK ${LIBRARY_DEPENDENCIES})
 set(MODULE_CUSTOM_DIRECTORIES ${CMAKE_BINARY_DIR}/src)
 
 finish_module()
-
-# tell target where to find .dlls
-target_link_directories(lib${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/src)
