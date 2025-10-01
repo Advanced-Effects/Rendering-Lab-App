@@ -3,6 +3,7 @@
 #include "GLWindow.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
+#include "include/gpu/GrContext.h"
 
 // This object connects the Skia library to the OpenGL window,
 // and provides a method to draw.
@@ -20,6 +21,8 @@ private:
 
         // Skia Canvas is the object we use to draw shapes
         SkCanvas* m_skiaContext = nullptr;
+        sk_sp<GrContext> m_grContext = nullptr;
+        sk_sp<SkSurface> obtainSkiaSurfaceFromCurrentGLContext();
         SkCanvas* obtainSkCanvas();
         // we store skia surface here to keep it in memory
         sk_sp<SkSurface> m_skiaSurface;
