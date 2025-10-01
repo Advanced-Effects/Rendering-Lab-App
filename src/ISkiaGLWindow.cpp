@@ -11,8 +11,9 @@
 sk_sp<SkSurface> ISkiaGLWindow::obtainSkiaSurfaceFromCurrentGLContext() {
         auto glContext = m_glWindow->glContext();
 
-        // You've already created your OpenGL context and bound it.
-        sk_sp<const GrGLInterface> interface = nullptr;
+        // Grabs the OpenGL context that is currently set as "current"
+        // (we set it with `glfwMakeContextCurrent` in `main.cpp`)
+        auto interface = GrGLMakeNativeInterface();
 
         const GrContextOptions &grOptions = GrContextOptions();
         m_graphicsContext = GrContext::MakeGL(interface, grOptions);
